@@ -110,7 +110,30 @@ class SceneWorker{
         this.addLightsToScene();
         this.addGroundToScene();
         this.setCameraTopProection();
+        this.buildWorld();
         this.printContent();
+
+        const t = this;
+        this.repeatingMethod(function(){
+            t.printContent();
+        });
+    }
+
+    buildWorld(){
+        const length = 20;
+        for(let i = 0; i < length; i++){
+            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(0,i,this.scene);
+            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(19,i,this.scene);
+        }
+
+        for(let i = 1; i < length - 1; i++){
+            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, 0, this.scene);
+            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, 19, this.scene);
+        }
+    }
+
+    repeatingMethod(foo){
+        this.repeatInterval = setInterval(foo, 50);
     }
 
     setCameraTopProection(){
@@ -141,19 +164,20 @@ class SceneWorker{
     }
 
     addLightsToScene(){
-        const light_1 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0,0);
-        const light_2 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100,0);
-        const light_3 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100,100);
-        const light_4 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0,100);
+        const light_1 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 0);
+        const light_2 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 0);
+        const light_3 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 100);
+        const light_4 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 100);
+        const light_5 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(50, 50);
         this.scene.add(light_1);
         this.scene.add(light_2);
         this.scene.add(light_3);
         this.scene.add(light_4);
+        this.scene.add(light_5);
     }
 
     addGroundToScene(){
-        const plane = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createPlane(100);
-        this.scene.add(plane);
+        __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createPlane(100, this.scene);
     }
 
 
@@ -187,21 +211,47 @@ class ElementGetter{
 
 class ObjectsCreator{
     static createSpotLight(xx, zz){
-        let spotLight = new THREE.SpotLight("#ffffff", 1);
-        const yy = 120;
+        let spotLight = new THREE.SpotLight("#ffffff", 0.5);
+        const yy = 220;
         spotLight.position.set(xx, yy, zz);
         return spotLight;
     }
 
-    static createPlane(ww){
-        let planeGeometry = new THREE.PlaneGeometry(ww, ww, 1, 1);
-        let planeMaterial = new THREE.MeshLambertMaterial({color: "#d27442"});
-        let plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.rotation.x = (-0.5) * Math.PI;
-        plane.position.x = ww / 2;
-        plane.position.y = 0;
-        plane.position.z = ww / 2;
-        return plane;
+    static createPlane(ww, scene){
+        let loader = new THREE.TextureLoader();
+        loader.load("images/ground.png", function(image){
+
+            const repeatValue = 20;
+            image.wrapS = THREE.RepeatWrapping;
+            image.wrapT = THREE.RepeatWrapping;
+            image.repeat.set(repeatValue, repeatValue);
+
+            let planeGeometry = new THREE.PlaneGeometry(ww, ww, 1, 1);
+            let planeMaterial = new THREE.MeshLambertMaterial({map: image});
+            let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.rotation.x = (-0.5) * Math.PI;
+            plane.position.x = ww / 2;
+            plane.position.y = 0;
+            plane.position.z = ww / 2;
+            scene.add(plane);
+        });
+    }
+
+    static createWall(i, j, scene){
+        i = parseInt(i);
+        j = parseInt(j);
+        const ww = 5;
+
+        let loader = new THREE.TextureLoader();
+        loader.load("images/wall.png", function(image) {
+            let cubeGeometry = new THREE.CubeGeometry(ww, ww, ww);
+            let cubeMaterial = new THREE.MeshLambertMaterial({map: image});
+            let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+            cube.position.x = j * ww + ww / 2;
+            cube.position.y = ww / 2;
+            cube.position.z = i * ww + ww / 2;
+            scene.add(cube);
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ObjectsCreator;

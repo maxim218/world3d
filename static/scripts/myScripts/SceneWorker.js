@@ -13,7 +13,30 @@ export default class SceneWorker{
         this.addLightsToScene();
         this.addGroundToScene();
         this.setCameraTopProection();
+        this.buildWorld();
         this.printContent();
+
+        const t = this;
+        this.repeatingMethod(function(){
+            t.printContent();
+        });
+    }
+
+    buildWorld(){
+        const length = 20;
+        for(let i = 0; i < length; i++){
+            ObjectsCreator.createWall(0,i,this.scene);
+            ObjectsCreator.createWall(19,i,this.scene);
+        }
+
+        for(let i = 1; i < length - 1; i++){
+            ObjectsCreator.createWall(i, 0, this.scene);
+            ObjectsCreator.createWall(i, 19, this.scene);
+        }
+    }
+
+    repeatingMethod(foo){
+        this.repeatInterval = setInterval(foo, 50);
     }
 
     setCameraTopProection(){
@@ -44,19 +67,20 @@ export default class SceneWorker{
     }
 
     addLightsToScene(){
-        const light_1 = ObjectsCreator.createSpotLight(0,0);
-        const light_2 = ObjectsCreator.createSpotLight(100,0);
-        const light_3 = ObjectsCreator.createSpotLight(100,100);
-        const light_4 = ObjectsCreator.createSpotLight(0,100);
+        const light_1 = ObjectsCreator.createSpotLight(0, 0);
+        const light_2 = ObjectsCreator.createSpotLight(100, 0);
+        const light_3 = ObjectsCreator.createSpotLight(100, 100);
+        const light_4 = ObjectsCreator.createSpotLight(0, 100);
+        const light_5 = ObjectsCreator.createSpotLight(50, 50);
         this.scene.add(light_1);
         this.scene.add(light_2);
         this.scene.add(light_3);
         this.scene.add(light_4);
+        this.scene.add(light_5);
     }
 
     addGroundToScene(){
-        const plane = ObjectsCreator.createPlane(100);
-        this.scene.add(plane);
+        ObjectsCreator.createPlane(100, this.scene);
     }
 
 
