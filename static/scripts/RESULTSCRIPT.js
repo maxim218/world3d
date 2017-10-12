@@ -94,6 +94,8 @@ window.onload = function(){
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(3);
+
 
 
 
@@ -105,6 +107,22 @@ class SceneWorker{
         this.hh = hh;
 
         this.initSceneCameraRenderer();
+        this.addLightsToScene();
+        this.addGroundToScene();
+        this.setCameraTopProection();
+        this.printContent();
+    }
+
+    setCameraTopProection(){
+        const camera = this.camera;
+
+        camera.position.x = 50;
+        camera.position.y = 100;
+        camera.position.z = 50;
+
+        camera.rotation.x = -Math.PI / 2;
+        camera.rotation.y = 0;
+        camera.rotation.z = 0;
     }
 
     printContent(){
@@ -120,7 +138,22 @@ class SceneWorker{
         this.renderer.setClearColor("#5882ff");
         this.renderer.setSize(ww, hh);
         this.box.append(this.renderer.domElement);
-        this.printContent();
+    }
+
+    addLightsToScene(){
+        const light_1 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0,0);
+        const light_2 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100,0);
+        const light_3 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100,100);
+        const light_4 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0,100);
+        this.scene.add(light_1);
+        this.scene.add(light_2);
+        this.scene.add(light_3);
+        this.scene.add(light_4);
+    }
+
+    addGroundToScene(){
+        const plane = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createPlane(100);
+        this.scene.add(plane);
     }
 
 
@@ -143,6 +176,36 @@ class ElementGetter{
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ElementGetter;
 ;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+class ObjectsCreator{
+    static createSpotLight(xx, zz){
+        let spotLight = new THREE.SpotLight("#ffffff", 1);
+        const yy = 120;
+        spotLight.position.set(xx, yy, zz);
+        return spotLight;
+    }
+
+    static createPlane(ww){
+        let planeGeometry = new THREE.PlaneGeometry(ww, ww, 1, 1);
+        let planeMaterial = new THREE.MeshLambertMaterial({color: "#d27442"});
+        let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = (-0.5) * Math.PI;
+        plane.position.x = ww / 2;
+        plane.position.y = 0;
+        plane.position.z = ww / 2;
+        return plane;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ObjectsCreator;
+
 
 
 /***/ })
