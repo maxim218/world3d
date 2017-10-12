@@ -80,7 +80,7 @@ class MainClass {
     }
 
     createControliingObjects(){
-        this.sceneWorker = new __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__["a" /* default */]("centerBox", 1000, 800);
+        this.sceneWorker = new __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__["a" /* default */]("threeJSGraphicsBox", 1000, 800);
     }
 }
 
@@ -96,6 +96,8 @@ window.onload = function(){
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__ = __webpack_require__(6);
+
 
 
 
@@ -112,9 +114,13 @@ class SceneWorker{
         this.addLightsToScene();
         this.addGroundToScene();
         this.setCameraTopProection();
+
+        this.wallsArray = [];
         this.buildWallsPerimetr();
         this.buildWalls();
-        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene);
+
+        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray);
+
         this.printContent();
 
         const t = this;
@@ -124,36 +130,48 @@ class SceneWorker{
         });
     }
 
+    addWall(i, j){
+        const wall = {
+            i: i,
+            j: j
+        };
+        this.wallsArray.push(wall);
+    }
+
+
     buildWallsPerimetr(){
         const length = 20;
         for(let i = 0; i < length; i++){
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(0,i,this.scene);
+            this.addWall(0, i);
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(19,i,this.scene);
+            this.addWall(19, i);
         }
 
         for(let i = 1; i < length - 1; i++){
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, 0, this.scene);
+            this.addWall(i, 0);
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, 19, this.scene);
+            this.addWall(i, 19);
         }
     }
 
     buildWalls(){
-        const scene = this.scene;
+        const t = this;
+
         function wall(i,j){
-            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, j, scene);
+            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, j, t.scene);
+            t.addWall(i, j);
         }
 
-        wall(4,4);
-        wall(4,5);
-        wall(4,6);
+        const levelArr = __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__["a" /* default */].level_1();
+        for(let i = 0; i < levelArr.length; i++){
+            const obj = levelArr[i];
+            const ii = obj.i;
+            const jj = obj.j;
+            wall(ii,jj);
+        }
 
-        wall(9,4);
-        wall(9,5);
-        wall(9,6);
-
-        wall(14,4);
-        wall(14,5);
-        wall(14,6);
     }
 
     repeatingMethod(foo){
@@ -292,8 +310,9 @@ class ObjectsCreator{
 
 
 class HeroController{
-    constructor(scene) {
+    constructor(scene, wallsArray) {
         this.scene = scene;
+        this.wallsArray = wallsArray;
 
         this.createHero(4, 9);
 
@@ -366,23 +385,55 @@ class HeroController{
         }
     }
 
-    moveHero(){
-        if(this.a === true){
-            this.hero.rotation.y += this.speedRotation;
-        }
+    hitTest(){
+        const arr = this.wallsArray;
 
-        if(this.d === true){
-            this.hero.rotation.y -= this.speedRotation;
-        }
+        let xx = this.hero.position.x;
+        let zz = this.hero.position.z;
 
         if(this.w === true){
-            this.hero.position.x += this.speedMoving * Math.cos(this.hero.rotation.y);
-            this.hero.position.z += -this.speedMoving * Math.sin(this.hero.rotation.y);
+            xx = this.hero.position.x + this.speedMoving * Math.cos(this.hero.rotation.y);
+            zz = this.hero.position.z - this.speedMoving * Math.sin(this.hero.rotation.y);
         }
 
         if(this.s === true){
-            this.hero.position.x += -this.speedMoving * Math.cos(this.hero.rotation.y);
-            this.hero.position.z += this.speedMoving * Math.sin(this.hero.rotation.y);
+            xx = this.hero.position.x - this.speedMoving * Math.cos(this.hero.rotation.y);
+            zz = this.hero.position.z + this.speedMoving * Math.sin(this.hero.rotation.y);
+        }
+
+        const x_pos = parseInt(xx / 5);
+        const z_pos = parseInt(zz / 5);
+
+        for(let i = 0; i < arr.length; i++){
+            const obj = arr[i];
+
+            if(obj.i === z_pos && obj.j === x_pos){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    moveHero(){
+        if(this.hitTest() === false) {
+            if (this.a === true) {
+                this.hero.rotation.y += this.speedRotation;
+            }
+
+            if (this.d === true) {
+                this.hero.rotation.y -= this.speedRotation;
+            }
+
+            if (this.w === true) {
+                this.hero.position.x += this.speedMoving * Math.cos(this.hero.rotation.y);
+                this.hero.position.z += -this.speedMoving * Math.sin(this.hero.rotation.y);
+            }
+
+            if (this.s === true) {
+                this.hero.position.x += -this.speedMoving * Math.cos(this.hero.rotation.y);
+                this.hero.position.z += this.speedMoving * Math.sin(this.hero.rotation.y);
+            }
         }
     }
 }
@@ -416,6 +467,35 @@ class Logger{
     }
 }
 /* unused harmony export default */
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+class LevelReturner{
+    static level_1(){
+        return [
+            {i: 4, j: 4},
+            {i: 4, j: 5},
+            {i: 4, j: 6},
+            {i: 4, j: 7},
+            {i: 9, j: 4},
+            {i: 9, j: 5},
+            {i: 9, j: 6},
+            {i: 9, j: 7},
+            {i: 14, j: 4},
+            {i: 14, j: 5},
+            {i: 14, j: 6},
+            {i: 14, j: 7}
+        ];
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = LevelReturner;
 
 
 

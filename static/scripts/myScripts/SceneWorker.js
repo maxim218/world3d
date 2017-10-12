@@ -3,6 +3,7 @@
 import ElementGetter from "./ElementGetter.js";
 import ObjectsCreator from "./ObjectsCreator";
 import HeroController from "./HeroController";
+import LevelReturner from "./LevelReturner.js";
 
 export default class SceneWorker{
     constructor(idBox, ww, hh){
@@ -14,9 +15,13 @@ export default class SceneWorker{
         this.addLightsToScene();
         this.addGroundToScene();
         this.setCameraTopProection();
+
+        this.wallsArray = [];
         this.buildWallsPerimetr();
         this.buildWalls();
-        this.heroController = new HeroController(this.scene);
+
+        this.heroController = new HeroController(this.scene, this.wallsArray);
+
         this.printContent();
 
         const t = this;
@@ -26,36 +31,48 @@ export default class SceneWorker{
         });
     }
 
+    addWall(i, j){
+        const wall = {
+            i: i,
+            j: j
+        };
+        this.wallsArray.push(wall);
+    }
+
+
     buildWallsPerimetr(){
         const length = 20;
         for(let i = 0; i < length; i++){
             ObjectsCreator.createWall(0,i,this.scene);
+            this.addWall(0, i);
             ObjectsCreator.createWall(19,i,this.scene);
+            this.addWall(19, i);
         }
 
         for(let i = 1; i < length - 1; i++){
             ObjectsCreator.createWall(i, 0, this.scene);
+            this.addWall(i, 0);
             ObjectsCreator.createWall(i, 19, this.scene);
+            this.addWall(i, 19);
         }
     }
 
     buildWalls(){
-        const scene = this.scene;
+        const t = this;
+
         function wall(i,j){
-            ObjectsCreator.createWall(i, j, scene);
+            ObjectsCreator.createWall(i, j, t.scene);
+            t.addWall(i, j);
         }
 
-        wall(4,4);
-        wall(4,5);
-        wall(4,6);
+        const levelArr = LevelReturner.level_1();
+        for(let i = 0; i < levelArr.length; i++){
+            const obj = levelArr[i];
+            const ii = obj.i;
+            const jj = obj.j;
+            wall(ii,jj);
+        }
 
-        wall(9,4);
-        wall(9,5);
-        wall(9,6);
-
-        wall(14,4);
-        wall(14,5);
-        wall(14,6);
     }
 
     repeatingMethod(foo){

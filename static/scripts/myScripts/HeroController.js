@@ -3,8 +3,9 @@
 import Logger from "./Logger.js";
 
 export default class HeroController{
-    constructor(scene) {
+    constructor(scene, wallsArray) {
         this.scene = scene;
+        this.wallsArray = wallsArray;
 
         this.createHero(4, 9);
 
@@ -77,23 +78,55 @@ export default class HeroController{
         }
     }
 
-    moveHero(){
-        if(this.a === true){
-            this.hero.rotation.y += this.speedRotation;
-        }
+    hitTest(){
+        const arr = this.wallsArray;
 
-        if(this.d === true){
-            this.hero.rotation.y -= this.speedRotation;
-        }
+        let xx = this.hero.position.x;
+        let zz = this.hero.position.z;
 
         if(this.w === true){
-            this.hero.position.x += this.speedMoving * Math.cos(this.hero.rotation.y);
-            this.hero.position.z += -this.speedMoving * Math.sin(this.hero.rotation.y);
+            xx = this.hero.position.x + this.speedMoving * Math.cos(this.hero.rotation.y);
+            zz = this.hero.position.z - this.speedMoving * Math.sin(this.hero.rotation.y);
         }
 
         if(this.s === true){
-            this.hero.position.x += -this.speedMoving * Math.cos(this.hero.rotation.y);
-            this.hero.position.z += this.speedMoving * Math.sin(this.hero.rotation.y);
+            xx = this.hero.position.x - this.speedMoving * Math.cos(this.hero.rotation.y);
+            zz = this.hero.position.z + this.speedMoving * Math.sin(this.hero.rotation.y);
+        }
+
+        const x_pos = parseInt(xx / 5);
+        const z_pos = parseInt(zz / 5);
+
+        for(let i = 0; i < arr.length; i++){
+            const obj = arr[i];
+
+            if(obj.i === z_pos && obj.j === x_pos){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    moveHero(){
+        if(this.hitTest() === false) {
+            if (this.a === true) {
+                this.hero.rotation.y += this.speedRotation;
+            }
+
+            if (this.d === true) {
+                this.hero.rotation.y -= this.speedRotation;
+            }
+
+            if (this.w === true) {
+                this.hero.position.x += this.speedMoving * Math.cos(this.hero.rotation.y);
+                this.hero.position.z += -this.speedMoving * Math.sin(this.hero.rotation.y);
+            }
+
+            if (this.s === true) {
+                this.hero.position.x += -this.speedMoving * Math.cos(this.hero.rotation.y);
+                this.hero.position.z += this.speedMoving * Math.sin(this.hero.rotation.y);
+            }
         }
     }
 }

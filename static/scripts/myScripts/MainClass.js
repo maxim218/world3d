@@ -8,7 +8,7 @@ class MainClass {
     }
 
     createControliingObjects(){
-        this.sceneWorker = new SceneWorker("centerBox", 1000, 800);
+        this.sceneWorker = new SceneWorker("threeJSGraphicsBox", 1000, 800);
     }
 }
 
