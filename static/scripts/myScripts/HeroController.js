@@ -5,12 +5,16 @@ import Logger from "./Logger.js";
 export default class HeroController{
     constructor(scene) {
         this.scene = scene;
+
         this.createHero(4, 9);
 
         this.w = false;
         this.a = false;
         this.s = false;
         this.d = false;
+
+        this.speedMoving = 0.2;
+        this.speedRotation = 0.05;
 
         this.addKeyEvents();
     }
@@ -55,6 +59,8 @@ export default class HeroController{
         cone.rotation.z = -Math.PI / 2;
 
         this.scene.add(cone);
+
+        this.hero = cone;
     }
 
     addKeyEvents(){
@@ -72,6 +78,22 @@ export default class HeroController{
     }
 
     moveHero(){
+        if(this.a === true){
+            this.hero.rotation.y += this.speedRotation;
+        }
 
+        if(this.d === true){
+            this.hero.rotation.y -= this.speedRotation;
+        }
+
+        if(this.w === true){
+            this.hero.position.x += this.speedMoving * Math.cos(this.hero.rotation.y);
+            this.hero.position.z += -this.speedMoving * Math.sin(this.hero.rotation.y);
+        }
+
+        if(this.s === true){
+            this.hero.position.x += -this.speedMoving * Math.cos(this.hero.rotation.y);
+            this.hero.position.z += this.speedMoving * Math.sin(this.hero.rotation.y);
+        }
     }
 }
