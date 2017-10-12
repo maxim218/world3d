@@ -1,8 +1,14 @@
 "use strict";
 
+import SceneWorker from "./SceneWorker.js";
+
 class MainClass {
     constructor(){
+        this.createControliingObjects();
+    }
 
+    createControliingObjects(){
+        this.sceneWorker = new SceneWorker("centerBox", 1000, 800);
     }
 }
 
