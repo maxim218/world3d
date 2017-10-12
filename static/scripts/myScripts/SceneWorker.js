@@ -2,6 +2,7 @@
 
 import ElementGetter from "./ElementGetter.js";
 import ObjectsCreator from "./ObjectsCreator";
+import HeroController from "./HeroController";
 
 export default class SceneWorker{
     constructor(idBox, ww, hh){
@@ -13,16 +14,19 @@ export default class SceneWorker{
         this.addLightsToScene();
         this.addGroundToScene();
         this.setCameraTopProection();
-        this.buildWorld();
+        this.buildWallsPerimetr();
+        this.buildWalls();
+        this.heroController = new HeroController(this.scene);
         this.printContent();
 
         const t = this;
         this.repeatingMethod(function(){
+            t.heroController.moveHero();
             t.printContent();
         });
     }
 
-    buildWorld(){
+    buildWallsPerimetr(){
         const length = 20;
         for(let i = 0; i < length; i++){
             ObjectsCreator.createWall(0,i,this.scene);
@@ -33,6 +37,25 @@ export default class SceneWorker{
             ObjectsCreator.createWall(i, 0, this.scene);
             ObjectsCreator.createWall(i, 19, this.scene);
         }
+    }
+
+    buildWalls(){
+        const scene = this.scene;
+        function wall(i,j){
+            ObjectsCreator.createWall(i, j, scene);
+        }
+
+        wall(4,4);
+        wall(4,5);
+        wall(4,6);
+
+        wall(9,4);
+        wall(9,5);
+        wall(9,6);
+
+        wall(14,4);
+        wall(14,5);
+        wall(14,6);
     }
 
     repeatingMethod(foo){
@@ -82,6 +105,5 @@ export default class SceneWorker{
     addGroundToScene(){
         ObjectsCreator.createPlane(100, this.scene);
     }
-
 
 };

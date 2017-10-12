@@ -95,6 +95,8 @@ window.onload = function(){
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(4);
+
 
 
 
@@ -110,16 +112,19 @@ class SceneWorker{
         this.addLightsToScene();
         this.addGroundToScene();
         this.setCameraTopProection();
-        this.buildWorld();
+        this.buildWallsPerimetr();
+        this.buildWalls();
+        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene);
         this.printContent();
 
         const t = this;
         this.repeatingMethod(function(){
+            t.heroController.moveHero();
             t.printContent();
         });
     }
 
-    buildWorld(){
+    buildWallsPerimetr(){
         const length = 20;
         for(let i = 0; i < length; i++){
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(0,i,this.scene);
@@ -130,6 +135,25 @@ class SceneWorker{
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, 0, this.scene);
             __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, 19, this.scene);
         }
+    }
+
+    buildWalls(){
+        const scene = this.scene;
+        function wall(i,j){
+            __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createWall(i, j, scene);
+        }
+
+        wall(4,4);
+        wall(4,5);
+        wall(4,6);
+
+        wall(9,4);
+        wall(9,5);
+        wall(9,6);
+
+        wall(14,4);
+        wall(14,5);
+        wall(14,6);
     }
 
     repeatingMethod(foo){
@@ -179,7 +203,6 @@ class SceneWorker{
     addGroundToScene(){
         __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createPlane(100, this.scene);
     }
-
 
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SceneWorker;
@@ -255,6 +278,121 @@ class ObjectsCreator{
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ObjectsCreator;
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Logger_js__ = __webpack_require__(5);
+
+
+
+
+class HeroController{
+    constructor(scene) {
+        this.scene = scene;
+        this.createHero(4, 9);
+
+        this.w = false;
+        this.a = false;
+        this.s = false;
+        this.d = false;
+
+        this.addKeyEvents();
+    }
+
+    setKeyValues(n, flag) {
+        switch (n) {
+            case 87:
+                this.w = flag;
+                break;
+            case 65:
+                this.a = flag;
+                break;
+            case 83:
+                this.s = flag;
+                break;
+            case 68:
+                this.d = flag;
+                break;
+        }
+    }
+
+    createHero(i, j){
+        i = parseInt(i);
+        j = parseInt(j);
+
+        const ww = 5;
+
+        let radius = ww / 2;
+        let height = ww;
+        let sideNumber = 4;
+
+        let cone_geometry = new THREE.ConeBufferGeometry(radius, height, sideNumber);
+        let cone_material = new THREE.MeshLambertMaterial({color: "#0000ff"});
+        let cone = new THREE.Mesh(cone_geometry,cone_material);
+
+        cone.position.x = j * ww + ww / 2;
+        cone.position.y = ww / 2;
+        cone.position.z = i * ww + ww / 2;
+
+        cone.rotation.x = 0;
+        cone.rotation.y = 0;
+        cone.rotation.z = -Math.PI / 2;
+
+        this.scene.add(cone);
+    }
+
+    addKeyEvents(){
+        const t = this;
+
+        window.onkeydown = function(event) {
+            const keyNumber = event.keyCode;
+            t.setKeyValues(keyNumber, true);
+        };
+
+        window.onkeyup = function(event){
+            const keyNumber = event.keyCode;
+            t.setKeyValues(keyNumber, false);
+        }
+    }
+
+    moveHero(){
+
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = HeroController;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+class Logger{
+    static write(){
+        const flag = true;
+
+        if(flag === true) {
+            if (arguments.length === 0) {
+                return;
+            }
+
+            let elementsString = "";
+            for (let i = 0; i < arguments.length; i++) {
+                const element = arguments[i].toString();
+                elementsString = elementsString + element + " ";
+            }
+            console.log("Message: " + elementsString);
+        }
+    }
+}
+/* unused harmony export default */
 
 
 
