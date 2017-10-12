@@ -363,6 +363,15 @@ class ObjectsCreator{
             scene.add(cube);
         });
     }
+
+    static createCar(i, j, scene){
+        i = parseInt(i);
+        j = parseInt(j);
+
+
+
+
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ObjectsCreator;
 
@@ -460,6 +469,8 @@ class HeroController{
         let xx = this.hero.position.x;
         let zz = this.hero.position.z;
 
+        this.speedMoving += 2;
+
         if(this.w === true){
             xx = this.hero.position.x + this.speedMoving * Math.cos(this.hero.rotation.y);
             zz = this.hero.position.z - this.speedMoving * Math.sin(this.hero.rotation.y);
@@ -469,6 +480,8 @@ class HeroController{
             xx = this.hero.position.x - this.speedMoving * Math.cos(this.hero.rotation.y);
             zz = this.hero.position.z + this.speedMoving * Math.sin(this.hero.rotation.y);
         }
+
+        this.speedMoving -= 2;
 
         const x_pos = parseInt(xx / 5);
         const z_pos = parseInt(zz / 5);

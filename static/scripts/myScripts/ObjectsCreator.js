@@ -44,4 +44,13 @@ export default class ObjectsCreator{
             scene.add(cube);
         });
     }
+
+    static createCar(i, j, scene){
+        i = parseInt(i);
+        j = parseInt(j);
+
+
+
+
+    }
 }
