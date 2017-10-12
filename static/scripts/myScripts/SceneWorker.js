@@ -11,6 +11,8 @@ export default class SceneWorker{
         this.ww = ww;
         this.hh = hh;
 
+        this.cameraType = "TOP";
+
         this.initSceneCameraRenderer();
         this.addLightsToScene();
         this.addGroundToScene();
@@ -27,8 +29,27 @@ export default class SceneWorker{
         const t = this;
         this.repeatingMethod(function(){
             t.heroController.moveHero();
+
+            if(t.cameraType === "TOP"){
+                t.setCameraTopProection();
+            }
+
+            if(t.cameraType === "FACE"){
+                t.camera.position.x = t.heroController.hero.position.x;
+                t.camera.position.y = 2.6;
+                t.camera.position.z = t.heroController.hero.position.z;
+
+                t.camera.rotation.x = 0;
+                t.camera.rotation.y = t.heroController.hero.rotation.y - Math.PI / 2;
+                t.camera.rotation.z = 0;
+            }
+
             t.printContent();
         });
+    }
+
+    setCameraType(type){
+        this.cameraType = type.toString();
     }
 
     addWall(i, j){

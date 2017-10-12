@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,19 +68,84 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+
+
+class ElementGetter{
+    static get(idBox){
+        idBox = idBox.toString();
+        return document.getElementById(idBox);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ElementGetter;
+;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+class Logger{
+    static write(){
+        const flag = true;
+
+        if(flag === true) {
+            if (arguments.length === 0) {
+                return;
+            }
+
+            let elementsString = "";
+            for (let i = 0; i < arguments.length; i++) {
+                const element = arguments[i].toString();
+                elementsString = elementsString + element + " ";
+            }
+            console.log("Message: " + elementsString);
+        }
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Logger;
+
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ElementGetter_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logger_js__ = __webpack_require__(1);
+
+
 
 
 
 
 class MainClass {
     constructor(){
-        this.createControliingObjects();
+        this.createControlingObjects();
+        this.addEventsToPanelButtons();
     }
 
-    createControliingObjects(){
+    createControlingObjects(){
         this.sceneWorker = new __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__["a" /* default */]("threeJSGraphicsBox", 1000, 800);
+    }
+
+    addEventsToPanelButtons(){
+        const t = this;
+
+        __WEBPACK_IMPORTED_MODULE_1__ElementGetter_js__["a" /* default */].get("btnTop").onclick = function () {
+            __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Proection TOP");
+            t.sceneWorker.setCameraType("TOP");
+        };
+
+        __WEBPACK_IMPORTED_MODULE_1__ElementGetter_js__["a" /* default */].get("btnFace").onclick = function () {
+            __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Proection FACE");
+            t.sceneWorker.setCameraType("FACE");
+        }
     }
 }
 
@@ -89,13 +154,13 @@ window.onload = function(){
 };
 
 /***/ }),
-/* 1 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__ = __webpack_require__(6);
 
 
@@ -109,6 +174,8 @@ class SceneWorker{
         this.box = __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__["a" /* default */].get(idBox);
         this.ww = ww;
         this.hh = hh;
+
+        this.cameraType = "TOP";
 
         this.initSceneCameraRenderer();
         this.addLightsToScene();
@@ -126,8 +193,27 @@ class SceneWorker{
         const t = this;
         this.repeatingMethod(function(){
             t.heroController.moveHero();
+
+            if(t.cameraType === "TOP"){
+                t.setCameraTopProection();
+            }
+
+            if(t.cameraType === "FACE"){
+                t.camera.position.x = t.heroController.hero.position.x;
+                t.camera.position.y = 2.6;
+                t.camera.position.z = t.heroController.hero.position.z;
+
+                t.camera.rotation.x = 0;
+                t.camera.rotation.y = t.heroController.hero.rotation.y - Math.PI / 2;
+                t.camera.rotation.z = 0;
+            }
+
             t.printContent();
         });
+    }
+
+    setCameraType(type){
+        this.cameraType = type.toString();
     }
 
     addWall(i, j){
@@ -227,24 +313,7 @@ class SceneWorker{
 ;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-class ElementGetter{
-    static get(idBox){
-        idBox = idBox.toString();
-        return document.getElementById(idBox);
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ElementGetter;
-;
-
-
-/***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -300,11 +369,11 @@ class ObjectsCreator{
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Logger_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Logger_js__ = __webpack_require__(1);
 
 
 
@@ -438,35 +507,6 @@ class HeroController{
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = HeroController;
-
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-class Logger{
-    static write(){
-        const flag = true;
-
-        if(flag === true) {
-            if (arguments.length === 0) {
-                return;
-            }
-
-            let elementsString = "";
-            for (let i = 0; i < arguments.length; i++) {
-                const element = arguments[i].toString();
-                elementsString = elementsString + element + " ";
-            }
-            console.log("Message: " + elementsString);
-        }
-    }
-}
-/* unused harmony export default */
 
 
 
