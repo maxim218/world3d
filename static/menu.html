@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>menu</title>
+    <style>
+        body {
+            background-color: #999999;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        button{
+            background-color: #15fff2;
+            color: black;
+            width: 300px;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            border: 2px solid black;
+            border-radius: 7px;
+            padding: 5px;
+            outline: none;
+        }
+
+        select{
+            background-color: #ffffff;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            border: 2px solid black;
+            border-radius: 7px;
+            padding: 5px;
+            outline: none;
+            width: 300px;
+        }
+
+        button:hover{
+            background-color: white;
+            cursor: pointer;
+        }
+
+        #centerBox{
+            padding: 25px;
+            margin: 0 auto;
+            background-color: #37e7ff;
+            width: 950px;
+            height: 900px;
+            border: solid 1px black;
+            z-index: 1;
+        }
+
+        #levelContentFirst{
+            padding: 20px;
+            overflow-y: scroll;
+            height: 300px;
+            width: 600px;
+            background-color: #1fd8ff;
+        }
+
+        #listOfBoxesForStartTraining{
+            padding: 20px;
+            overflow-y: scroll;
+            height: 300px;
+            width: 600px;
+            background-color: #1fd8ff;
+        }
+    </style>
 </head>
 <body>
+
+<div id = "centerBox">
+    <h1>Главное меню</h1>
+    <hr>
+
+    <div style = "padding-top: 20px"></div>
+    <button onclick="window.location = 'redactor.html';">Создать новый уровень</button>
+
+    <div style = "padding-top: 20px"></div>
+    <button onclick = "redactorLevelShowBox()">Редактировать существующий уровень</button>
+
+    <div style = "padding-top: 20px"></div>
+    <button onclick = "startTrainingShowBox()">Запустить тренировку на уровне</button>
+
+    <div style = "padding-top: 30px"></div>
+
+    <div id = "contentRedactorLevel" hidden>
+        <h2>Выбор уровня для редактирования</h2>
+        <div style = "padding-top: 15px"></div>
+        <div id = "levelContentFirst"></div>
+    </div>
+
+    <div id = "contentStartTraining" hidden>
+        <h2>Выбор уровня для запуска тренировки</h2>
+        <div style = "padding-top: 15px"></div>
+        <div id = "listOfBoxesForStartTraining"></div>
+    </div>
+</div>
+
+<script src = "scripts/menuScript.js"></script>
 
 </body>
 </html>

@@ -1,3 +1,4 @@
+"use strict";
 
 function setType(element){
     elem("type").innerHTML = element.innerHTML;
