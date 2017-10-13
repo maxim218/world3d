@@ -50,10 +50,6 @@ export default class SceneWorker{
                 t.camera.rotation.z = 0;
             }
 
-            t.heroLight.position.x = t.heroController.hero.position.x;
-            t.heroLight.position.y = 50;
-            t.heroLight.position.z = t.heroController.hero.position.z;
-
             t.printContent();
         });
     }
@@ -135,10 +131,10 @@ export default class SceneWorker{
             let carObj = null;
 
             if(type === "X") {
-                carObj = ObjectsCreator.createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
+                carObj = ObjectsCreator.createCarMovingX(i, j, t.scene, "#00FF00", "#000000");
             }
             if(type === "Z") {
-                carObj = ObjectsCreator.createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
+                carObj = ObjectsCreator.createCarMovingZ(i, j, t.scene, "#0000FF", "#000000");
             }
             t.carsArray.push({i: i, j: j, carObj: carObj, v: 1, type: type});
         }
@@ -173,7 +169,7 @@ export default class SceneWorker{
             t.addWall(i, j);
         }
 
-        const levelArr = LevelReturner.level_1();
+        const levelArr = LevelReturner.getWallsLevel();
         for(let i = 0; i < levelArr.length; i++){
             const obj = levelArr[i];
             const ii = obj.i;
@@ -221,14 +217,12 @@ export default class SceneWorker{
         const light_2 = ObjectsCreator.createSpotLight(100, 0, force);
         const light_3 = ObjectsCreator.createSpotLight(100, 100, force);
         const light_4 = ObjectsCreator.createSpotLight(0, 100, force);
-        const light_5 = ObjectsCreator.createSpotLight(50, 50, force + 1);
+        const light_5 = ObjectsCreator.createSpotLight(50, 50, force);
         this.scene.add(light_1);
         this.scene.add(light_2);
         this.scene.add(light_3);
         this.scene.add(light_4);
         this.scene.add(light_5);
-
-        this.heroLight = light_5;
     }
 
     addGroundToScene(){

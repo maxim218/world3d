@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>redactor</title>
+    <style>
+        body {
+            background-color: #999999;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        button{
+            background-color: #15fff2;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            border: 2px solid black;
+            border-radius: 7px;
+            padding: 5px;
+            outline: none;
+        }
+
+        .impField{
+            background-color: #ffffff;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            border: 2px solid black;
+            border-radius: 7px;
+            padding: 5px;
+            outline: none;
+            width: 150px;
+        }
+
+        button:hover{
+            background-color: white;
+            cursor: pointer;
+        }
+
+        #centerBox{
+            padding: 25px;
+            margin: 0 auto;
+            background-color: #37e7ff;
+            width: 950px;
+            height: 900px;
+            border: solid 1px black;
+            z-index: 1;
+        }
+
+        #can {
+            cursor: pointer;
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            margin-left: 0px;
+            margin-top: 20px;
+        }
+
+        #menu{
+            position: absolute;
+            width: 750px;
+            height: 150px;
+            margin-left: 0px;
+            margin-top: 550px;
+            padding: 25px;
+            border-radius: 10px;
+            border: solid 2px black;
+        }
+
+        #fon{
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        #messageWindow{
+            position: fixed;
+            width: 500px;
+            left: 200px;
+            top: 100px;
+            padding: 25px;
+            background-color: #37e7ff;
+            z-index: 3;
+            border-radius: 5px;
+            border: 4px solid #000000;
+        }
+    </style>
+</head>
+<body>
+
+<div id = "fon" hidden></div>
+<div id = "messageWindow" hidden>
+    <h2>Сообщение</h2>
+    <hr>
+    <div align = "center">
+        <div style = "padding-top: 20px"></div>
+        <span style = "font-size: 20px" id = "wwwText"></span>
+        <div style = "padding-top: 20px"></div>
+        <button style = "width: 150px; height: 40px;" onclick = "elem('fon').hidden = true; elem('messageWindow').hidden = true;">OK</button>
+    </div>
+</div>
+
+<div id = "centerBox">
+    <h1>Разработка уровней</h1>
+    <hr>
+
+    <div id = "menu">
+        <button onclick = "setType(this)">Стены</button>
+        <button onclick = "setType(this)">Машины X</button>
+        <button onclick = "setType(this)">Машины Z</button>
+        <button onclick = "setType(this)">Стартовая позиция</button>
+        <button onclick = "setType(this)">Финишная позиция</button>
+        <span style = "padding-left: 25px"></span>
+        <span id = "type">Стены</span>
+
+        <div style = "padding-top: 20px"></div>
+
+        <button onclick = "buildSetka(); buildPerimaterOfWalls();">Очистить</button>
+
+        <div style = "padding-top: 20px"></div>
+
+        <span>Название уровня</span>
+        <span style = "padding-left: 15px"></span>
+        <input type = "text" id = "nameLevelField" class = "impField" spellcheck = 'false' autocomplete = 'off' maxlength="7">
+        <span style = "padding-left: 15px"></span>
+        <button onclick = "saveLevel()">Сохранить</button>
+    </div>
+
+    <canvas width = '500px' height = '500px' id = 'can'></canvas>
+</div>
+
+<script src = "scripts/redactorScript.js"></script>
+
+</body>
+</html>

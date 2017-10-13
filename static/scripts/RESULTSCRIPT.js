@@ -215,10 +215,6 @@ class SceneWorker{
                 t.camera.rotation.z = 0;
             }
 
-            t.heroLight.position.x = t.heroController.hero.position.x;
-            t.heroLight.position.y = 50;
-            t.heroLight.position.z = t.heroController.hero.position.z;
-
             t.printContent();
         });
     }
@@ -300,10 +296,10 @@ class SceneWorker{
             let carObj = null;
 
             if(type === "X") {
-                carObj = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
+                carObj = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingX(i, j, t.scene, "#00FF00", "#000000");
             }
             if(type === "Z") {
-                carObj = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
+                carObj = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingZ(i, j, t.scene, "#0000FF", "#000000");
             }
             t.carsArray.push({i: i, j: j, carObj: carObj, v: 1, type: type});
         }
@@ -338,7 +334,7 @@ class SceneWorker{
             t.addWall(i, j);
         }
 
-        const levelArr = __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__["a" /* default */].level_1();
+        const levelArr = __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__["a" /* default */].getWallsLevel();
         for(let i = 0; i < levelArr.length; i++){
             const obj = levelArr[i];
             const ii = obj.i;
@@ -386,14 +382,12 @@ class SceneWorker{
         const light_2 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 0, force);
         const light_3 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 100, force);
         const light_4 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 100, force);
-        const light_5 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(50, 50, force + 1);
+        const light_5 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(50, 50, force);
         this.scene.add(light_1);
         this.scene.add(light_2);
         this.scene.add(light_3);
         this.scene.add(light_4);
         this.scene.add(light_5);
-
-        this.heroLight = light_5;
     }
 
     addGroundToScene(){
@@ -413,7 +407,7 @@ class SceneWorker{
 
 class ObjectsCreator{
     static createSpotLight(xx, zz, force){
-        let spotLight = new THREE.SpotLight("#ffffff", parseFloat(force));
+        let spotLight = new THREE.SpotLight("#ffffff", parseFloat(force + 0.1));
         const yy = 220;
         spotLight.position.set(xx, yy, zz);
         return spotLight;
@@ -586,7 +580,7 @@ class HeroController{
         let sideNumber = 4;
 
         let cone_geometry = new THREE.ConeBufferGeometry(radius, height, sideNumber);
-        let cone_material = new THREE.MeshLambertMaterial({color: "#49d3ff"});
+        let cone_material = new THREE.MeshLambertMaterial({color: "#ff0000"});
         let cone = new THREE.Mesh(cone_geometry,cone_material);
 
         cone.position.x = j * ww + ww / 2;
@@ -684,7 +678,7 @@ class HeroController{
 
 
 class LevelReturner{
-    static level_1(){
+    static getWallsLevel(){
         return [
             {i: 4, j: 4},
             {i: 4, j: 5},

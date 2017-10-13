@@ -2,7 +2,7 @@
 
 export default class ObjectsCreator{
     static createSpotLight(xx, zz, force){
-        let spotLight = new THREE.SpotLight("#ffffff", parseFloat(force));
+        let spotLight = new THREE.SpotLight("#ffffff", parseFloat(force + 0.1));
         const yy = 220;
         spotLight.position.set(xx, yy, zz);
         return spotLight;

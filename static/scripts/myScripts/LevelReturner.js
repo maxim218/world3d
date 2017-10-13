@@ -1,7 +1,7 @@
 "use strict";
 
 export default class LevelReturner{
-    static level_1(){
+    static getWallsLevel(){
         return [
             {i: 4, j: 4},
             {i: 4, j: 5},
