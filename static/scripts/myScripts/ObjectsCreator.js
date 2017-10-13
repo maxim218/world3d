@@ -112,5 +112,6 @@ export default class ObjectsCreator{
         }
 
         scene.add(group);
+        return group;
     }
 }

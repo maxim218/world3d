@@ -70,23 +70,6 @@
 "use strict";
 
 
-class ElementGetter{
-    static get(idBox){
-        idBox = idBox.toString();
-        return document.getElementById(idBox);
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ElementGetter;
-;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
 class Logger{
     static write(){
         const flag = true;
@@ -110,14 +93,31 @@ class Logger{
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+class ElementGetter{
+    static get(idBox){
+        idBox = idBox.toString();
+        return document.getElementById(idBox);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ElementGetter;
+;
+
+
+/***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ElementGetter_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logger_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ElementGetter_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logger_js__ = __webpack_require__(0);
 
 
 
@@ -158,10 +158,12 @@ window.onload = function(){
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Logger__ = __webpack_require__(0);
+
 
 
 
@@ -234,23 +236,80 @@ class SceneWorker{
     }
 
     movingOfAllCars(){
+        const speed = 0.5;
+        const t = this;
 
+        function isWall(zz,xx){
+            for(let i = 0; i < t.wallsArray.length; i++){
+                const wall = t.wallsArray[i];
+                if(wall.i === zz && wall.j === xx){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        for(let i = 0; i < t.carsArray.length; i++){
+            const obj = t.carsArray[i];
+
+            let xx = obj.carObj.position.x;
+            let zz = obj.carObj.position.z;
+
+            xx = parseInt(xx / 5);
+            zz = parseInt(zz / 5);
+
+            if(obj.type === "X"){
+                if(obj.v === 1){
+                    if(isWall(zz, xx + 1)){
+                        obj.v = 0;
+                    } else {
+                        obj.carObj.position.x += speed;
+                    }
+                }
+                if(obj.v === 0){
+                    if(isWall(zz, xx - 1)){
+                        obj.v = 1;
+                    } else {
+                        obj.carObj.position.x -= speed;
+                    }
+                }
+            }
+
+            if(obj.type === "Z"){
+                if(obj.v === 1){
+                    if(isWall(zz + 1, xx)){
+                        obj.v = 0;
+                    } else {
+                        obj.carObj.position.z += speed;
+                    }
+                }
+                if(obj.v === 0){
+                    if(isWall(zz - 1, xx)){
+                        obj.v = 1;
+                    } else {
+                        obj.carObj.position.z -= speed;
+                    }
+                }
+            }
+        }
     }
 
     createCars(){
         const t = this;
         function addCar(i, j, type){
+            let carObj = null;
+
             if(type === "X") {
-                __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
+                carObj = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
             }
             if(type === "Z") {
-                __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
+                carObj = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
             }
-            t.carsArray.push({i: i, j: j});
+            t.carsArray.push({i: i, j: j, carObj: carObj, v: 1, type: type});
         }
 
-        addCar(7, 7,"X");
-        addCar(8, 8,"Z");
+        addCar(9, 4, "X");
+        addCar(8, 8, "Z");
 
     }
 
@@ -464,6 +523,7 @@ class ObjectsCreator{
         }
 
         scene.add(group);
+        return group;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ObjectsCreator;
@@ -475,7 +535,7 @@ class ObjectsCreator{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Logger_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Logger_js__ = __webpack_require__(0);
 
 
 
@@ -526,7 +586,7 @@ class HeroController{
         let sideNumber = 4;
 
         let cone_geometry = new THREE.ConeBufferGeometry(radius, height, sideNumber);
-        let cone_material = new THREE.MeshLambertMaterial({color: "#0000ff"});
+        let cone_material = new THREE.MeshLambertMaterial({color: "#49d3ff"});
         let cone = new THREE.Mesh(cone_geometry,cone_material);
 
         cone.position.x = j * ww + ww / 2;

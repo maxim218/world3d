@@ -48,7 +48,7 @@ export default class HeroController{
         let sideNumber = 4;
 
         let cone_geometry = new THREE.ConeBufferGeometry(radius, height, sideNumber);
-        let cone_material = new THREE.MeshLambertMaterial({color: "#0000ff"});
+        let cone_material = new THREE.MeshLambertMaterial({color: "#49d3ff"});
         let cone = new THREE.Mesh(cone_geometry,cone_material);
 
         cone.position.x = j * ww + ww / 2;

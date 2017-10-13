@@ -4,6 +4,7 @@ import ElementGetter from "./ElementGetter.js";
 import ObjectsCreator from "./ObjectsCreator";
 import HeroController from "./HeroController";
 import LevelReturner from "./LevelReturner.js";
+import Logger from "./Logger";
 
 export default class SceneWorker{
     constructor(idBox, ww, hh){
@@ -71,24 +72,79 @@ export default class SceneWorker{
 
     movingOfAllCars(){
         const speed = 0.5;
-
         const t = this;
+
+        function isWall(zz,xx){
+            for(let i = 0; i < t.wallsArray.length; i++){
+                const wall = t.wallsArray[i];
+                if(wall.i === zz && wall.j === xx){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        for(let i = 0; i < t.carsArray.length; i++){
+            const obj = t.carsArray[i];
+
+            let xx = obj.carObj.position.x;
+            let zz = obj.carObj.position.z;
+
+            xx = parseInt(xx / 5);
+            zz = parseInt(zz / 5);
+
+            if(obj.type === "X"){
+                if(obj.v === 1){
+                    if(isWall(zz, xx + 1)){
+                        obj.v = 0;
+                    } else {
+                        obj.carObj.position.x += speed;
+                    }
+                }
+                if(obj.v === 0){
+                    if(isWall(zz, xx - 1)){
+                        obj.v = 1;
+                    } else {
+                        obj.carObj.position.x -= speed;
+                    }
+                }
+            }
+
+            if(obj.type === "Z"){
+                if(obj.v === 1){
+                    if(isWall(zz + 1, xx)){
+                        obj.v = 0;
+                    } else {
+                        obj.carObj.position.z += speed;
+                    }
+                }
+                if(obj.v === 0){
+                    if(isWall(zz - 1, xx)){
+                        obj.v = 1;
+                    } else {
+                        obj.carObj.position.z -= speed;
+                    }
+                }
+            }
+        }
     }
 
     createCars(){
         const t = this;
         function addCar(i, j, type){
+            let carObj = null;
+
             if(type === "X") {
-                ObjectsCreator.createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
+                carObj = ObjectsCreator.createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
             }
             if(type === "Z") {
-                ObjectsCreator.createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
+                carObj = ObjectsCreator.createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
             }
-            t.carsArray.push({i: i, j: j});
+            t.carsArray.push({i: i, j: j, carObj: carObj, v: 1, type: type});
         }
 
-        addCar(7, 7,"X");
-        addCar(8, 8,"Z");
+        addCar(9, 4, "X");
+        addCar(8, 8, "Z");
 
     }
 
