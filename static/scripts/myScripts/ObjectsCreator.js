@@ -1,8 +1,8 @@
 "use strict";
 
 export default class ObjectsCreator{
-    static createSpotLight(xx, zz){
-        let spotLight = new THREE.SpotLight("#ffffff", 0.5);
+    static createSpotLight(xx, zz, force){
+        let spotLight = new THREE.SpotLight("#ffffff", parseFloat(force));
         const yy = 220;
         spotLight.position.set(xx, yy, zz);
         return spotLight;

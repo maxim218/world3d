@@ -208,6 +208,10 @@ class SceneWorker{
                 t.camera.rotation.z = 0;
             }
 
+            t.heroLight.position.x = t.heroController.hero.position.x;
+            t.heroLight.position.y = 50;
+            t.heroLight.position.z = t.heroController.hero.position.z;
+
             t.printContent();
         });
     }
@@ -292,16 +296,20 @@ class SceneWorker{
     }
 
     addLightsToScene(){
-        const light_1 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 0);
-        const light_2 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 0);
-        const light_3 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 100);
-        const light_4 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 100);
-        const light_5 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(50, 50);
+        const force = 0.5;
+
+        const light_1 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 0, force);
+        const light_2 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 0, force);
+        const light_3 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(100, 100, force);
+        const light_4 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(0, 100, force);
+        const light_5 = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createSpotLight(50, 50, force + 1);
         this.scene.add(light_1);
         this.scene.add(light_2);
         this.scene.add(light_3);
         this.scene.add(light_4);
         this.scene.add(light_5);
+
+        this.heroLight = light_5;
     }
 
     addGroundToScene(){
@@ -320,8 +328,8 @@ class SceneWorker{
 
 
 class ObjectsCreator{
-    static createSpotLight(xx, zz){
-        let spotLight = new THREE.SpotLight("#ffffff", 0.5);
+    static createSpotLight(xx, zz, force){
+        let spotLight = new THREE.SpotLight("#ffffff", parseFloat(force));
         const yy = 220;
         spotLight.position.set(xx, yy, zz);
         return spotLight;

@@ -44,6 +44,10 @@ export default class SceneWorker{
                 t.camera.rotation.z = 0;
             }
 
+            t.heroLight.position.x = t.heroController.hero.position.x;
+            t.heroLight.position.y = 50;
+            t.heroLight.position.z = t.heroController.hero.position.z;
+
             t.printContent();
         });
     }
@@ -128,16 +132,20 @@ export default class SceneWorker{
     }
 
     addLightsToScene(){
-        const light_1 = ObjectsCreator.createSpotLight(0, 0);
-        const light_2 = ObjectsCreator.createSpotLight(100, 0);
-        const light_3 = ObjectsCreator.createSpotLight(100, 100);
-        const light_4 = ObjectsCreator.createSpotLight(0, 100);
-        const light_5 = ObjectsCreator.createSpotLight(50, 50);
+        const force = 0.5;
+
+        const light_1 = ObjectsCreator.createSpotLight(0, 0, force);
+        const light_2 = ObjectsCreator.createSpotLight(100, 0, force);
+        const light_3 = ObjectsCreator.createSpotLight(100, 100, force);
+        const light_4 = ObjectsCreator.createSpotLight(0, 100, force);
+        const light_5 = ObjectsCreator.createSpotLight(50, 50, force + 1);
         this.scene.add(light_1);
         this.scene.add(light_2);
         this.scene.add(light_3);
         this.scene.add(light_4);
         this.scene.add(light_5);
+
+        this.heroLight = light_5;
     }
 
     addGroundToScene(){
