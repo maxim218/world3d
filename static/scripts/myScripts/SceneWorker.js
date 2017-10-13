@@ -22,12 +22,17 @@ export default class SceneWorker{
         this.buildWallsPerimetr();
         this.buildWalls();
 
+        this.carsArray = [];
+        this.createCars();
+
         this.heroController = new HeroController(this.scene, this.wallsArray);
 
         this.printContent();
 
         const t = this;
         this.repeatingMethod(function(){
+            t.movingOfAllCars();
+
             t.heroController.moveHero();
 
             if(t.cameraType === "TOP"){
@@ -64,6 +69,28 @@ export default class SceneWorker{
         this.wallsArray.push(wall);
     }
 
+    movingOfAllCars(){
+        const speed = 0.5;
+
+        const t = this;
+    }
+
+    createCars(){
+        const t = this;
+        function addCar(i, j, type){
+            if(type === "X") {
+                ObjectsCreator.createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
+            }
+            if(type === "Z") {
+                ObjectsCreator.createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
+            }
+            t.carsArray.push({i: i, j: j});
+        }
+
+        addCar(7, 7,"X");
+        addCar(8, 8,"Z");
+
+    }
 
     buildWallsPerimetr(){
         const length = 20;

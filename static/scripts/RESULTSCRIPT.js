@@ -186,12 +186,17 @@ class SceneWorker{
         this.buildWallsPerimetr();
         this.buildWalls();
 
+        this.carsArray = [];
+        this.createCars();
+
         this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray);
 
         this.printContent();
 
         const t = this;
         this.repeatingMethod(function(){
+            t.movingOfAllCars();
+
             t.heroController.moveHero();
 
             if(t.cameraType === "TOP"){
@@ -228,6 +233,26 @@ class SceneWorker{
         this.wallsArray.push(wall);
     }
 
+    movingOfAllCars(){
+
+    }
+
+    createCars(){
+        const t = this;
+        function addCar(i, j, type){
+            if(type === "X") {
+                __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingX(i, j, t.scene, "#0000FF", "#000000");
+            }
+            if(type === "Z") {
+                __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createCarMovingZ(i, j, t.scene, "#FF0000", "#000000");
+            }
+            t.carsArray.push({i: i, j: j});
+        }
+
+        addCar(7, 7,"X");
+        addCar(8, 8,"Z");
+
+    }
 
     buildWallsPerimetr(){
         const length = 20;
@@ -372,13 +397,73 @@ class ObjectsCreator{
         });
     }
 
-    static createCar(i, j, scene){
+    static createCube(ww, hh, dd, color){
+        let cubeGeometry = new THREE.CubeGeometry(ww, hh, dd);
+        let cubeMaterial = new THREE.MeshLambertMaterial({color: color.toString()});
+        return new THREE.Mesh(cubeGeometry, cubeMaterial);
+    }
+
+    static createCylinder(radius, height, color){
+        let geometry = new THREE.CylinderGeometry(radius, radius, height, 16);
+        let material = new THREE.MeshBasicMaterial({color: color.toString()});
+        return new THREE.Mesh( geometry, material );
+    }
+
+    static createCarMovingX(i, j, scene, colorBody, colorWheels){
+        return ObjectsCreator.createCar(i, j, scene, colorBody, colorWheels, "XXX");
+    }
+
+    static createCarMovingZ(i, j, scene, colorBody, colorWheels){
+        return ObjectsCreator.createCar(i, j, scene, colorBody, colorWheels, "ZZZ");
+    }
+
+    static createCar(i, j, scene, colorBody, colorWheels, typeOfCar){
         i = parseInt(i);
         j = parseInt(j);
 
+        colorBody = colorBody.toString();
+        colorWheels = colorWheels.toString();
 
+        let cube1 = ObjectsCreator.createCube(5, 2, 3, colorBody);
+        cube1.position.set(0, 2, 0);
+        let cube2 = ObjectsCreator.createCube(3, 1, 2, colorBody);
+        cube2.position.set(0, 3.5, 0);
 
+        let c1 = ObjectsCreator.createCylinder(1, 1, colorWheels);
+        let c2 = ObjectsCreator.createCylinder(1, 1, colorWheels);
+        let c3 = ObjectsCreator.createCylinder(1, 1, colorWheels);
+        let c4 = ObjectsCreator.createCylinder(1, 1, colorWheels);
 
+        c1.rotation.set(Math.PI / 2, 0, 0);
+        c2.rotation.set(Math.PI / 2, 0, 0);
+        c3.rotation.set(Math.PI / 2, 0, 0);
+        c4.rotation.set(Math.PI / 2, 0, 0);
+
+        c1.position.set(1.5, 1, -1.5);
+        c2.position.set(1.5, 1, 1.5);
+        c3.position.set(-1.5, 1, -1.5);
+        c4.position.set(-1.5, 1, 1.5);
+
+        let group = new THREE.Group();
+
+        group.add(cube1);
+        group.add(cube2);
+        group.add(c1);
+        group.add(c2);
+        group.add(c3);
+        group.add(c4);
+
+        const ww = 5;
+
+        group.position.x = j * ww + ww / 2;
+        group.position.y = 0;
+        group.position.z = i * ww + ww / 2;
+
+        if(typeOfCar === "ZZZ"){
+            group.rotation.y = Math.PI / 2;
+        }
+
+        scene.add(group);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ObjectsCreator;
