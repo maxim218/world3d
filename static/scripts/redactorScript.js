@@ -10,6 +10,24 @@ let arr = [
 ];
 
 
+function normalChar(c) {
+    const s = "abcdefghijklmnopqrstuvwxyz1234567890";
+    const n = s.indexOf(c);
+    return n !== -1;
+}
+
+function normalString(s){
+    s = s.toString();
+    for(let i = 0; i < s.length; i++){
+        const c = s.charAt(i);
+        if(normalChar(c) === false){
+            return false;
+        }
+    }
+    return true;
+}
+
+
 function printMessage(s){
     s = s.toString();
     elem("wwwText").innerHTML = s;
@@ -23,7 +41,18 @@ function saveLevel(){
         arr: arr
     };
     let jsonString = encodeURIComponent(JSON.stringify(myObj));
-    let levelName = elem("nameLevelField").value;
+    let levelName = elem("nameLevelField").value.toString();
+
+    if(levelName.length === 0){
+        printMessage("Поле ввода пусто.");
+        return;
+    }
+
+    if(normalString(levelName) === false){
+        printMessage("Поле ввода содержит запретные символы.");
+        return;
+    }
+
     localStorage.setItem(levelName.toString(), jsonString.toString());
     printMessage("Уровень успешно сохранён.");
 }

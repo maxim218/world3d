@@ -61,7 +61,6 @@
         #menu{
             position: absolute;
             width: 750px;
-            height: 150px;
             margin-left: 0px;
             margin-top: 550px;
             padding: 25px;
@@ -123,12 +122,13 @@
         <div style = "padding-top: 20px"></div>
 
         <button onclick = "buildSetka(); buildPerimaterOfWalls();">Очистить</button>
+        <button onclick = "window.location = 'menu.html';">Главное меню</button>
 
         <div style = "padding-top: 20px"></div>
 
         <span>Название уровня</span>
         <span style = "padding-left: 15px"></span>
-        <input type = "text" id = "nameLevelField" class = "impField" spellcheck = 'false' autocomplete = 'off' maxlength="7">
+        <input type = "text" id = "nameLevelField" class = "impField" spellcheck = 'false' autocomplete = 'off' maxlength="10">
         <span style = "padding-left: 15px"></span>
         <button onclick = "saveLevel()">Сохранить</button>
     </div>
