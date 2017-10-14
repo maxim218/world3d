@@ -38,10 +38,6 @@ function printMessage(s){
 
 
 function saveLevel(){
-    let myObj = {
-        arr: arr
-    };
-    let jsonString = encodeURIComponent(JSON.stringify(myObj));
     let levelName = elem("nameLevelField").value.toString();
 
     if(levelName.length === 0){
@@ -53,6 +49,13 @@ function saveLevel(){
         printMessage("Поле ввода содержит запретные символы.");
         return;
     }
+
+    let myObj = {
+        arr: arr,
+        levelName: levelName
+    };
+
+    let jsonString = encodeURIComponent(JSON.stringify(myObj));
 
     localStorage.setItem(levelName.toString(), jsonString.toString());
     printMessage("Уровень успешно сохранён.");
@@ -145,10 +148,67 @@ function elem(s){
     return document.getElementById(s.toString());
 }
 
+
+function readJSONobjectFromURL(){
+    let contentFromURL = window.location.search;
+
+    if(contentFromURL.indexOf("?") === -1){
+        return null;
+    }
+
+    let mass = [];
+    mass = contentFromURL.split("?");
+
+    let jsonString = decodeURIComponent(mass[1].toString());
+    return  JSON.parse(jsonString);
+}
+
+
 window.onload = function(){
         holst = elem("can").getContext("2d");
         clearHolst();
         buildSetka();
+        buildPerimaterOfWalls();
+
+        let jsonObject = readJSONobjectFromURL();
+
+        if(jsonObject !== null){
+            elem("nameLevelField").value = jsonObject.levelName.toString();
+            let mass = jsonObject.arr;
+            for(let i = 0; i < 20; i++){
+                for(let j = 0; j < 20; j++){
+                    const value = mass[i][j];
+
+                    let foo = null;
+
+                    switch (value) {
+                        case 0:
+                            foo = addEmpty;
+                            break;
+                        case 1:
+                            foo = addWall;
+                            break;
+                        case 2:
+                            foo = addCarX;
+                            break;
+                        case 3:
+                            foo = addCarZ;
+                            break;
+                        case 4:
+                            foo = setStartPos;
+                            break;
+                        case 5:
+                            foo = setFinishPos;
+                            break;
+                    }
+
+                    if(foo !== null) {
+                        foo(i, j);
+                    }
+                }
+            }
+        }
+
         buildPerimaterOfWalls();
 
         elem("can").addEventListener("click",function(event){
