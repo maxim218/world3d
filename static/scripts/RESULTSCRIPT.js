@@ -177,6 +177,9 @@ class SceneWorker{
         this.ww = ww;
         this.hh = hh;
 
+        this.iii = 3;
+        this.jjj = 4;
+
         this.cameraType = "TOP";
 
         this.initSceneCameraRenderer();
@@ -191,7 +194,7 @@ class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray);
+        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj);
 
         this.printContent();
 
@@ -304,9 +307,28 @@ class SceneWorker{
             t.carsArray.push({i: i, j: j, carObj: carObj, v: 1, type: type});
         }
 
-        addCar(9, 4, "X");
-        addCar(8, 8, "Z");
+        const allLevel = __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__["a" /* default */].getLevelOfAllElements();
 
+        for(let i = 0; i < allLevel.length; i++){
+            const obj = allLevel[i];
+
+            const ii = obj.i;
+            const jj = obj.j;
+            const value = obj.value;
+
+            if(value === 2){
+                addCar(ii, jj, "X");
+            }
+
+            if(value === 3){
+                addCar(ii, jj, "Z");
+            }
+
+            if(value === 4){
+                this.iii = ii;
+                this.jjj = jj;
+            }
+        }
     }
 
     buildWallsPerimetr(){
@@ -535,11 +557,11 @@ class ObjectsCreator{
 
 
 class HeroController{
-    constructor(scene, wallsArray) {
+    constructor(scene, wallsArray, iii, jjj) {
         this.scene = scene;
         this.wallsArray = wallsArray;
 
-        this.createHero(4, 9);
+        this.createHero(iii, jjj);
 
         this.w = false;
         this.a = false;
@@ -679,20 +701,70 @@ class HeroController{
 
 class LevelReturner{
     static getWallsLevel(){
-        return [
-            {i: 4, j: 4},
-            {i: 4, j: 5},
-            {i: 4, j: 6},
-            {i: 4, j: 7},
-            {i: 9, j: 4},
-            {i: 9, j: 5},
-            {i: 9, j: 6},
-            {i: 9, j: 7},
-            {i: 14, j: 4},
-            {i: 14, j: 5},
-            {i: 14, j: 6},
-            {i: 14, j: 7}
-        ];
+            let contentFromURL = window.location.search;
+
+            if(contentFromURL.indexOf("?") === -1){
+                return [];
+            }
+
+            let mass = [];
+            mass = contentFromURL.split("?");
+
+            let jsonString = decodeURIComponent(mass[1].toString());
+            let myObj = JSON.parse(jsonString);
+
+            let arr = [];
+
+            function addToArr(i,j){
+                const obj = {
+                    i: i,
+                    j: j
+                };
+                arr.push(obj);
+            }
+
+            for(let i = 1; i < 19; i++){
+                for(let j = 1; j < 19; j++){
+                    if(myObj.arr[i][j] === 1) {
+                        addToArr(i, j);
+                    }
+                }
+            }
+
+            return arr;
+    }
+
+    static getLevelOfAllElements(){
+        let contentFromURL = window.location.search;
+
+        if(contentFromURL.indexOf("?") === -1){
+            return [];
+        }
+
+        let mass = [];
+        mass = contentFromURL.split("?");
+
+        let jsonString = decodeURIComponent(mass[1].toString());
+        let myObj = JSON.parse(jsonString);
+
+        let arr = [];
+
+        function addToArr(i,j,value){
+            const obj = {
+                i: i,
+                j: j,
+                value: value
+            };
+            arr.push(obj);
+        }
+
+        for(let i = 1; i < 19; i++){
+            for(let j = 1; j < 19; j++){
+                addToArr(i, j, myObj.arr[i][j]);
+            }
+        }
+
+        return arr;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = LevelReturner;

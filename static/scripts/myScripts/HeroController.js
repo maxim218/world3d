@@ -3,11 +3,11 @@
 import Logger from "./Logger.js";
 
 export default class HeroController{
-    constructor(scene, wallsArray) {
+    constructor(scene, wallsArray, iii, jjj) {
         this.scene = scene;
         this.wallsArray = wallsArray;
 
-        this.createHero(4, 9);
+        this.createHero(iii, jjj);
 
         this.w = false;
         this.a = false;

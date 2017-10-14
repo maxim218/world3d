@@ -12,6 +12,9 @@ export default class SceneWorker{
         this.ww = ww;
         this.hh = hh;
 
+        this.iii = 3;
+        this.jjj = 4;
+
         this.cameraType = "TOP";
 
         this.initSceneCameraRenderer();
@@ -26,7 +29,7 @@ export default class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new HeroController(this.scene, this.wallsArray);
+        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj);
 
         this.printContent();
 
@@ -139,9 +142,28 @@ export default class SceneWorker{
             t.carsArray.push({i: i, j: j, carObj: carObj, v: 1, type: type});
         }
 
-        addCar(9, 4, "X");
-        addCar(8, 8, "Z");
+        const allLevel = LevelReturner.getLevelOfAllElements();
 
+        for(let i = 0; i < allLevel.length; i++){
+            const obj = allLevel[i];
+
+            const ii = obj.i;
+            const jj = obj.j;
+            const value = obj.value;
+
+            if(value === 2){
+                addCar(ii, jj, "X");
+            }
+
+            if(value === 3){
+                addCar(ii, jj, "Z");
+            }
+
+            if(value === 4){
+                this.iii = ii;
+                this.jjj = jj;
+            }
+        }
     }
 
     buildWallsPerimetr(){

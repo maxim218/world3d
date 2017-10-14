@@ -2,19 +2,69 @@
 
 export default class LevelReturner{
     static getWallsLevel(){
-        return [
-            {i: 4, j: 4},
-            {i: 4, j: 5},
-            {i: 4, j: 6},
-            {i: 4, j: 7},
-            {i: 9, j: 4},
-            {i: 9, j: 5},
-            {i: 9, j: 6},
-            {i: 9, j: 7},
-            {i: 14, j: 4},
-            {i: 14, j: 5},
-            {i: 14, j: 6},
-            {i: 14, j: 7}
-        ];
+            let contentFromURL = window.location.search;
+
+            if(contentFromURL.indexOf("?") === -1){
+                return [];
+            }
+
+            let mass = [];
+            mass = contentFromURL.split("?");
+
+            let jsonString = decodeURIComponent(mass[1].toString());
+            let myObj = JSON.parse(jsonString);
+
+            let arr = [];
+
+            function addToArr(i,j){
+                const obj = {
+                    i: i,
+                    j: j
+                };
+                arr.push(obj);
+            }
+
+            for(let i = 1; i < 19; i++){
+                for(let j = 1; j < 19; j++){
+                    if(myObj.arr[i][j] === 1) {
+                        addToArr(i, j);
+                    }
+                }
+            }
+
+            return arr;
+    }
+
+    static getLevelOfAllElements(){
+        let contentFromURL = window.location.search;
+
+        if(contentFromURL.indexOf("?") === -1){
+            return [];
+        }
+
+        let mass = [];
+        mass = contentFromURL.split("?");
+
+        let jsonString = decodeURIComponent(mass[1].toString());
+        let myObj = JSON.parse(jsonString);
+
+        let arr = [];
+
+        function addToArr(i,j,value){
+            const obj = {
+                i: i,
+                j: j,
+                value: value
+            };
+            arr.push(obj);
+        }
+
+        for(let i = 1; i < 19; i++){
+            for(let j = 1; j < 19; j++){
+                addToArr(i, j, myObj.arr[i][j]);
+            }
+        }
+
+        return arr;
     }
 }
