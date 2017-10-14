@@ -1,6 +1,19 @@
 "use strict";
 
 export default class LevelReturner{
+    static getJSONString(){
+        let contentFromURL = window.location.search;
+
+        if(contentFromURL.indexOf("?") === -1){
+            return "";
+        }
+
+        let mass = [];
+        mass = contentFromURL.split("?");
+
+        return mass[1].toString();
+    }
+
     static getWallsLevel(){
             let contentFromURL = window.location.search;
 

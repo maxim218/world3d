@@ -1,11 +1,16 @@
 "use strict";
 
 import Logger from "./Logger.js";
+import LevelReturner from "./LevelReturner.js";
 
 export default class HeroController{
-    constructor(scene, wallsArray, iii, jjj, finI, finJ) {
+    constructor(scene, wallsArray, iii, jjj, finI, finJ, carsArray) {
         this.scene = scene;
+
         this.wallsArray = wallsArray;
+        this.carsArray = carsArray;
+
+        this.mainJSONstringOfTheLevel = LevelReturner.getJSONString();
 
         this.finI = finI;
         this.finJ = finJ;
@@ -104,9 +109,28 @@ export default class HeroController{
         const x_pos = parseInt(xx / 5);
         const z_pos = parseInt(zz / 5);
 
-        if(x_pos === this.finJ && z_pos === this.finI){
+
+        ////////////////////////////////
+
+        const nowX = parseInt(this.hero.position.x / 5);
+        const nowZ = parseInt(this.hero.position.z / 5);
+
+        if(nowX === this.finJ && nowZ === this.finI){
             window.location = "victory.html";
         }
+
+        for(let i = 0; i < this.carsArray.length; i++){
+            const car = this.carsArray[i].carObj;
+
+            const carX = parseInt(car.position.x / 5);
+            const carZ = parseInt(car.position.z / 5);
+
+            if(carX === nowX && carZ === nowZ){
+                window.location = "fail.html" + "?" + this.mainJSONstringOfTheLevel;
+            }
+        }
+
+        ////////////////////////////////
 
         for(let i = 0; i < arr.length; i++){
             const obj = arr[i];

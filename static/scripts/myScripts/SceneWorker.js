@@ -33,7 +33,7 @@ export default class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ);
+        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ, this.carsArray);
 
         this.printContent();
 

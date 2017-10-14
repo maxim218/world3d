@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>fail</title>
+    <style>
+        body {
+            background-color: #999999;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        button{
+            background-color: #15fff2;
+            color: black;
+            width: 300px;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            border: 2px solid black;
+            border-radius: 7px;
+            padding: 5px;
+            outline: none;
+        }
+
+        select{
+            background-color: #ffffff;
+            color: black;
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            border: 2px solid black;
+            border-radius: 7px;
+            padding: 5px;
+            outline: none;
+            width: 300px;
+        }
+
+        button:hover{
+            background-color: white;
+            cursor: pointer;
+        }
+
+        #centerBox{
+            padding: 25px;
+            margin: 0 auto;
+            background-color: #37e7ff;
+            width: 950px;
+            height: 900px;
+            border: solid 1px black;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div id = "centerBox">
+    <h1>Результат тренировки</h1>
+    <hr>
+    <div style = "padding-top: 20px"></div>
+    <div>
+        <h1>К сожалению, вы потерпели неудачу.</h1>
+
+        <div style = "padding-top: 20px"></div>
+        <button onclick = "restartLevel()">Перезапустить уровень</button>
+
+        <div style = "padding-top: 20px"></div>
+        <button onclick = "window.location = 'menu.html';">Главное меню</button>
+    </div>
+</div>
+
+<script>
+    function restartLevel(){
+        let contentFromURL = window.location.search;
+
+        if(contentFromURL.indexOf("?") === -1){
+            return "";
+        }
+
+        let mass = [];
+        mass = contentFromURL.split("?");
+
+        window.location = "world.html" + "?" + mass[1].toString();
+    }
+</script>
+
+</body>
+</html>

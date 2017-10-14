@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -114,8 +114,100 @@ class ElementGetter{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+
+
+class LevelReturner{
+    static getJSONString(){
+        let contentFromURL = window.location.search;
+
+        if(contentFromURL.indexOf("?") === -1){
+            return "";
+        }
+
+        let mass = [];
+        mass = contentFromURL.split("?");
+
+        return mass[1].toString();
+    }
+
+    static getWallsLevel(){
+            let contentFromURL = window.location.search;
+
+            if(contentFromURL.indexOf("?") === -1){
+                return [];
+            }
+
+            let mass = [];
+            mass = contentFromURL.split("?");
+
+            let jsonString = decodeURIComponent(mass[1].toString());
+            let myObj = JSON.parse(jsonString);
+
+            let arr = [];
+
+            function addToArr(i,j){
+                const obj = {
+                    i: i,
+                    j: j
+                };
+                arr.push(obj);
+            }
+
+            for(let i = 1; i < 19; i++){
+                for(let j = 1; j < 19; j++){
+                    if(myObj.arr[i][j] === 1) {
+                        addToArr(i, j);
+                    }
+                }
+            }
+
+            return arr;
+    }
+
+    static getLevelOfAllElements(){
+        let contentFromURL = window.location.search;
+
+        if(contentFromURL.indexOf("?") === -1){
+            return [];
+        }
+
+        let mass = [];
+        mass = contentFromURL.split("?");
+
+        let jsonString = decodeURIComponent(mass[1].toString());
+        let myObj = JSON.parse(jsonString);
+
+        let arr = [];
+
+        function addToArr(i,j,value){
+            const obj = {
+                i: i,
+                j: j,
+                value: value
+            };
+            arr.push(obj);
+        }
+
+        for(let i = 1; i < 19; i++){
+            for(let j = 1; j < 19; j++){
+                addToArr(i, j, myObj.arr[i][j]);
+            }
+        }
+
+        return arr;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = LevelReturner;
+
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SceneWorker_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ElementGetter_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logger_js__ = __webpack_require__(0);
 
@@ -154,14 +246,14 @@ window.onload = function(){
 };
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementGetter_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HeroController__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LevelReturner_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Logger__ = __webpack_require__(0);
 
 
@@ -198,7 +290,7 @@ class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ);
+        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ, this.carsArray);
 
         this.printContent();
 
@@ -439,7 +531,7 @@ class SceneWorker{
 ;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -576,19 +668,25 @@ class ObjectsCreator{
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Logger_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LevelReturner_js__ = __webpack_require__(2);
+
 
 
 
 
 class HeroController{
-    constructor(scene, wallsArray, iii, jjj, finI, finJ) {
+    constructor(scene, wallsArray, iii, jjj, finI, finJ, carsArray) {
         this.scene = scene;
+
         this.wallsArray = wallsArray;
+        this.carsArray = carsArray;
+
+        this.mainJSONstringOfTheLevel = __WEBPACK_IMPORTED_MODULE_1__LevelReturner_js__["a" /* default */].getJSONString();
 
         this.finI = finI;
         this.finJ = finJ;
@@ -687,9 +785,28 @@ class HeroController{
         const x_pos = parseInt(xx / 5);
         const z_pos = parseInt(zz / 5);
 
-        if(x_pos === this.finJ && z_pos === this.finI){
+
+        ////////////////////////////////
+
+        const nowX = parseInt(this.hero.position.x / 5);
+        const nowZ = parseInt(this.hero.position.z / 5);
+
+        if(nowX === this.finJ && nowZ === this.finI){
             window.location = "victory.html";
         }
+
+        for(let i = 0; i < this.carsArray.length; i++){
+            const car = this.carsArray[i].carObj;
+
+            const carX = parseInt(car.position.x / 5);
+            const carZ = parseInt(car.position.z / 5);
+
+            if(carX === nowX && carZ === nowZ){
+                window.location = "fail.html" + "?" + this.mainJSONstringOfTheLevel;
+            }
+        }
+
+        ////////////////////////////////
 
         for(let i = 0; i < arr.length; i++){
             const obj = arr[i];
@@ -725,85 +842,6 @@ class HeroController{
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = HeroController;
-
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-class LevelReturner{
-    static getWallsLevel(){
-            let contentFromURL = window.location.search;
-
-            if(contentFromURL.indexOf("?") === -1){
-                return [];
-            }
-
-            let mass = [];
-            mass = contentFromURL.split("?");
-
-            let jsonString = decodeURIComponent(mass[1].toString());
-            let myObj = JSON.parse(jsonString);
-
-            let arr = [];
-
-            function addToArr(i,j){
-                const obj = {
-                    i: i,
-                    j: j
-                };
-                arr.push(obj);
-            }
-
-            for(let i = 1; i < 19; i++){
-                for(let j = 1; j < 19; j++){
-                    if(myObj.arr[i][j] === 1) {
-                        addToArr(i, j);
-                    }
-                }
-            }
-
-            return arr;
-    }
-
-    static getLevelOfAllElements(){
-        let contentFromURL = window.location.search;
-
-        if(contentFromURL.indexOf("?") === -1){
-            return [];
-        }
-
-        let mass = [];
-        mass = contentFromURL.split("?");
-
-        let jsonString = decodeURIComponent(mass[1].toString());
-        let myObj = JSON.parse(jsonString);
-
-        let arr = [];
-
-        function addToArr(i,j,value){
-            const obj = {
-                i: i,
-                j: j,
-                value: value
-            };
-            arr.push(obj);
-        }
-
-        for(let i = 1; i < 19; i++){
-            for(let j = 1; j < 19; j++){
-                addToArr(i, j, myObj.arr[i][j]);
-            }
-        }
-
-        return arr;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = LevelReturner;
 
 
 
