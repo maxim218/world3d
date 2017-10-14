@@ -3,9 +3,12 @@
 import Logger from "./Logger.js";
 
 export default class HeroController{
-    constructor(scene, wallsArray, iii, jjj) {
+    constructor(scene, wallsArray, iii, jjj, finI, finJ) {
         this.scene = scene;
         this.wallsArray = wallsArray;
+
+        this.finI = finI;
+        this.finJ = finJ;
 
         this.createHero(iii, jjj);
 
@@ -100,6 +103,10 @@ export default class HeroController{
 
         const x_pos = parseInt(xx / 5);
         const z_pos = parseInt(zz / 5);
+
+        if(x_pos === this.finJ && z_pos === this.finI){
+            window.location = "victory.html";
+        }
 
         for(let i = 0; i < arr.length; i++){
             const obj = arr[i];

@@ -15,6 +15,8 @@ export default class SceneWorker{
         this.iii = 3;
         this.jjj = 4;
 
+        this.finI = 1000;
+        this.finJ = 1000;
         this.finishCube = null;
 
         this.cameraType = "TOP";
@@ -31,7 +33,7 @@ export default class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj);
+        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ);
 
         this.printContent();
 
@@ -176,6 +178,8 @@ export default class SceneWorker{
 
             if(value === 5){
                 t.finishCube = ObjectsCreator.createFinishPosition(ii, jj, t.scene);
+                t.finI = ii;
+                t.finJ = jj;
             }
         }
     }

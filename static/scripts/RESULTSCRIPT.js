@@ -180,6 +180,8 @@ class SceneWorker{
         this.iii = 3;
         this.jjj = 4;
 
+        this.finI = 1000;
+        this.finJ = 1000;
         this.finishCube = null;
 
         this.cameraType = "TOP";
@@ -196,7 +198,7 @@ class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj);
+        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ);
 
         this.printContent();
 
@@ -341,6 +343,8 @@ class SceneWorker{
 
             if(value === 5){
                 t.finishCube = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createFinishPosition(ii, jj, t.scene);
+                t.finI = ii;
+                t.finJ = jj;
             }
         }
     }
@@ -582,9 +586,12 @@ class ObjectsCreator{
 
 
 class HeroController{
-    constructor(scene, wallsArray, iii, jjj) {
+    constructor(scene, wallsArray, iii, jjj, finI, finJ) {
         this.scene = scene;
         this.wallsArray = wallsArray;
+
+        this.finI = finI;
+        this.finJ = finJ;
 
         this.createHero(iii, jjj);
 
@@ -679,6 +686,10 @@ class HeroController{
 
         const x_pos = parseInt(xx / 5);
         const z_pos = parseInt(zz / 5);
+
+        if(x_pos === this.finJ && z_pos === this.finI){
+            window.location = "victory.html";
+        }
 
         for(let i = 0; i < arr.length; i++){
             const obj = arr[i];
