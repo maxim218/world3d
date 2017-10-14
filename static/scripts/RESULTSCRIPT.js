@@ -180,6 +180,8 @@ class SceneWorker{
         this.iii = 3;
         this.jjj = 4;
 
+        this.finishCube = null;
+
         this.cameraType = "TOP";
 
         this.initSceneCameraRenderer();
@@ -200,6 +202,14 @@ class SceneWorker{
 
         const t = this;
         this.repeatingMethod(function(){
+
+            if(t.finishCube !== null){
+                t.finishCube.rotation.y += 0.04;
+                if(t.finishCube.rotation.y >= Math.PI / 2){
+                    t.finishCube.rotation.y = 0;
+                }
+            }
+
             t.movingOfAllCars();
 
             t.heroController.moveHero();
@@ -328,6 +338,10 @@ class SceneWorker{
                 this.iii = ii;
                 this.jjj = jj;
             }
+
+            if(value === 5){
+                t.finishCube = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createFinishPosition(ii, jj, t.scene);
+            }
         }
     }
 
@@ -434,6 +448,17 @@ class ObjectsCreator{
         spotLight.position.set(xx, yy, zz);
         return spotLight;
     }
+
+    static createFinishPosition(i, j, scene) {
+        const ww = 5;
+        let cube = ObjectsCreator.createCube(2, 2, 2, "#000000");
+        cube.position.x = j * ww + ww / 2;
+        cube.position.y = 2.5;
+        cube.position.z = i * ww + ww / 2;
+        scene.add(cube);
+        return cube;
+    }
+
 
     static createPlane(ww, scene){
         let loader = new THREE.TextureLoader();

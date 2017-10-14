@@ -8,6 +8,17 @@ export default class ObjectsCreator{
         return spotLight;
     }
 
+    static createFinishPosition(i, j, scene) {
+        const ww = 5;
+        let cube = ObjectsCreator.createCube(2, 2, 2, "#000000");
+        cube.position.x = j * ww + ww / 2;
+        cube.position.y = 2.5;
+        cube.position.z = i * ww + ww / 2;
+        scene.add(cube);
+        return cube;
+    }
+
+
     static createPlane(ww, scene){
         let loader = new THREE.TextureLoader();
         loader.load("images/ground.png", function(image){

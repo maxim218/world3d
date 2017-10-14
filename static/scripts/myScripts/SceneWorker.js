@@ -15,6 +15,8 @@ export default class SceneWorker{
         this.iii = 3;
         this.jjj = 4;
 
+        this.finishCube = null;
+
         this.cameraType = "TOP";
 
         this.initSceneCameraRenderer();
@@ -35,6 +37,14 @@ export default class SceneWorker{
 
         const t = this;
         this.repeatingMethod(function(){
+
+            if(t.finishCube !== null){
+                t.finishCube.rotation.y += 0.04;
+                if(t.finishCube.rotation.y >= Math.PI / 2){
+                    t.finishCube.rotation.y = 0;
+                }
+            }
+
             t.movingOfAllCars();
 
             t.heroController.moveHero();
@@ -162,6 +172,10 @@ export default class SceneWorker{
             if(value === 4){
                 this.iii = ii;
                 this.jjj = jj;
+            }
+
+            if(value === 5){
+                t.finishCube = ObjectsCreator.createFinishPosition(ii, jj, t.scene);
             }
         }
     }
