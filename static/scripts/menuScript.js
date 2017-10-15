@@ -59,7 +59,7 @@ window.onload = function(){
     box = elem("levelContentFirst");
 
     for(let i = 0; i < arr.length; i++){
-        const content = "<div onclick = 'f1(this);' style = 'width: 500px; cursor: pointer; padding: 15px; background-color: #15fff2;'>" + arr[i].keyElem + "</div>";
+        const content = "<div class='elemOfList' onclick = 'f1(this);'>" + arr[i].keyElem + "</div>";
         const paddingString = "<div style = 'padding: 5px;'></div>";
         box.innerHTML += (paddingString + content + paddingString);
     }
@@ -67,7 +67,7 @@ window.onload = function(){
     box = elem("listOfBoxesForStartTraining");
 
     for(let i = 0; i < arr.length; i++){
-        const content = "<div onclick = 'f2(this);' style = 'width: 500px; cursor: pointer; padding: 15px; background-color: #15fff2;'>" + arr[i].keyElem + "</div>";
+        const content = "<div class='elemOfList' onclick = 'f2(this);'>" + arr[i].keyElem + "</div>";
         const paddingString = "<div style = 'padding: 5px;'></div>";
         box.innerHTML += (paddingString + content + paddingString);
     }
