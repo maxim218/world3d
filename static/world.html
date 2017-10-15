@@ -3,61 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>world</title>
-    <style>
-        body {
-            background-color: #999999;
-            color: black;
-            font-family: Geneva, Arial, Helvetica, sans-serif;
-            font-size: 14px;
-        }
-
-        button{
-            background-color: #15fff2;
-            color: black;
-            font-family: Geneva, Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            border: 2px solid black;
-            border-radius: 7px;
-            padding: 5px;
-            outline: none;
-        }
-
-        button:hover{
-            background-color: white;
-            cursor: pointer;
-        }
-
-        #centerBox{
-            margin: 0 auto;
-            background-color: #37e7ff;
-            width: 1000px;
-            height: 950px;
-            padding: 0px;
-            border: solid 1px black;
-        }
-
-        #threeJSGraphicsBox{
-            background-color: #0000FF;
-            width: 1000px;
-            height: 800px;
-            padding: 0px;
-        }
-
-        #controlPanel{
-            padding: 15px;
-        }
-    </style>
+    <link rel = "stylesheet" type = "text/css" href = "./styles/world.css"/>
 </head>
 <body>
 
-<div id = "centerBox">
+<div id = "centerBox" align="center">
     <div id = "threeJSGraphicsBox" width = "1000px" height = "800px"></div>
 
     <div id = "controlPanel">
         <button id = "btnTop">Вид сверху</button>
         <button id = "btnFace">Вид от первого лица</button>
         <div style = "padding-top: 20px"></div>
-        <button onclick = "window.location = 'menu.html';">Главное меню</button>
+        <button onclick = "window.location = 'menu.html';" style="background-color: lightsalmon;">Главное меню</button>
     </div>
 </div>
 
