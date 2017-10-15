@@ -218,8 +218,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 class MainClass {
     constructor(){
-        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Version after changing design");
-        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Version: 1.4");
+        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("RELEASE VERSION");
+        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Version: 2.0");
         this.createControlingObjects();
         this.addEventsToPanelButtons();
     }
