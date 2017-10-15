@@ -4,8 +4,10 @@ import Logger from "./Logger.js";
 import LevelReturner from "./LevelReturner.js";
 
 export default class HeroController{
-    constructor(scene, wallsArray, iii, jjj, finI, finJ, carsArray) {
+    constructor(scene, wallsArray, iii, jjj, finI, finJ, carsArray, finishOfGameObject) {
         this.scene = scene;
+
+        this.finishOfGameObject = finishOfGameObject;
 
         this.wallsArray = wallsArray;
         this.carsArray = carsArray;
@@ -116,6 +118,7 @@ export default class HeroController{
         const nowZ = parseInt(this.hero.position.z / 5);
 
         if(nowX === this.finJ && nowZ === this.finI){
+            this.finishOfGameObject.gameFinish = true;
             window.location = "victory.html";
         }
 
@@ -135,6 +138,7 @@ export default class HeroController{
         const dist = getDistanse(finishX, finishZ, heroX, heroZ);
 
         if(dist <= 5.1){
+            this.finishOfGameObject.gameFinish = true;
             window.location = "victory.html";
         }
 
@@ -145,6 +149,7 @@ export default class HeroController{
             const carZ = parseInt(car.position.z / 5);
 
             if(carX === nowX && carZ === nowZ){
+                this.finishOfGameObject.gameFinish = true;
                 window.location = "fail.html" + "?" + this.mainJSONstringOfTheLevel;
             }
         }

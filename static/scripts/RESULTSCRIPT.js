@@ -292,12 +292,20 @@ class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ, this.carsArray);
+        this.finishOfGameObject = {
+            gameFinish: false
+        };
+
+        this.heroController = new __WEBPACK_IMPORTED_MODULE_2__HeroController__["a" /* default */](this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ, this.carsArray, this.finishOfGameObject);
 
         this.printContent();
 
         const t = this;
         this.repeatingMethod(function(){
+
+            if(t.finishOfGameObject.gameFinish === true){
+                clearInterval(t.repeatInterval);
+            }
 
             if(t.finishCube !== null){
                 t.finishCube.rotation.y += 0.04;
@@ -682,8 +690,10 @@ class ObjectsCreator{
 
 
 class HeroController{
-    constructor(scene, wallsArray, iii, jjj, finI, finJ, carsArray) {
+    constructor(scene, wallsArray, iii, jjj, finI, finJ, carsArray, finishOfGameObject) {
         this.scene = scene;
+
+        this.finishOfGameObject = finishOfGameObject;
 
         this.wallsArray = wallsArray;
         this.carsArray = carsArray;
@@ -794,6 +804,7 @@ class HeroController{
         const nowZ = parseInt(this.hero.position.z / 5);
 
         if(nowX === this.finJ && nowZ === this.finI){
+            this.finishOfGameObject.gameFinish = true;
             window.location = "victory.html";
         }
 
@@ -813,6 +824,7 @@ class HeroController{
         const dist = getDistanse(finishX, finishZ, heroX, heroZ);
 
         if(dist <= 5.1){
+            this.finishOfGameObject.gameFinish = true;
             window.location = "victory.html";
         }
 
@@ -823,6 +835,7 @@ class HeroController{
             const carZ = parseInt(car.position.z / 5);
 
             if(carX === nowX && carZ === nowZ){
+                this.finishOfGameObject.gameFinish = true;
                 window.location = "fail.html" + "?" + this.mainJSONstringOfTheLevel;
             }
         }

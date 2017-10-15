@@ -33,12 +33,20 @@ export default class SceneWorker{
         this.carsArray = [];
         this.createCars();
 
-        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ, this.carsArray);
+        this.finishOfGameObject = {
+            gameFinish: false
+        };
+
+        this.heroController = new HeroController(this.scene, this.wallsArray, this.iii, this.jjj, this.finI, this.finJ, this.carsArray, this.finishOfGameObject);
 
         this.printContent();
 
         const t = this;
         this.repeatingMethod(function(){
+
+            if(t.finishOfGameObject.gameFinish === true){
+                clearInterval(t.repeatInterval);
+            }
 
             if(t.finishCube !== null){
                 t.finishCube.rotation.y += 0.04;
