@@ -218,6 +218,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 class MainClass {
     constructor(){
+        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Version: 1.2");
         this.createControlingObjects();
         this.addEventsToPanelButtons();
     }
@@ -792,6 +793,25 @@ class HeroController{
         const nowZ = parseInt(this.hero.position.z / 5);
 
         if(nowX === this.finJ && nowZ === this.finI){
+            window.location = "victory.html";
+        }
+
+        const ww = 5;
+        const finishX = this.finJ * ww + ww / 2;
+        const finishZ = this.finI * ww + ww / 2;
+
+        const heroX = this.hero.position.x;
+        const heroZ = this.hero.position.z;
+
+        function getDistanse(x1,z1,x2,z2){
+            const otr1 = x1 - x2;
+            const otr2 = z1 - z2;
+            return Math.sqrt( (otr1 * otr1) + (otr2 * otr2) );
+        }
+
+        const dist = getDistanse(finishX, finishZ, heroX, heroZ);
+
+        if(dist <= 5.1){
             window.location = "victory.html";
         }
 
