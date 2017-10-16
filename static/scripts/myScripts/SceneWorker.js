@@ -48,6 +48,8 @@ export default class SceneWorker{
                 clearInterval(t.repeatInterval);
             }
 
+            t.pointLight.position.set(t.heroController.hero.position.x, 4, t.heroController.hero.position.z);
+
             if(t.finishCube !== null){
                 t.finishCube.rotation.y += 0.04;
                 if(t.finishCube.rotation.y >= Math.PI / 2){
@@ -271,6 +273,9 @@ export default class SceneWorker{
         this.scene.add(light_3);
         this.scene.add(light_4);
         this.scene.add(light_5);
+
+        this.pointLight = ObjectsCreator.createPointLight(50, 50, force);
+        this.scene.add(this.pointLight);
     }
 
     addGroundToScene(){

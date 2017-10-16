@@ -219,7 +219,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 class MainClass {
     constructor(){
         __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("RELEASE VERSION");
-        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Version: 2.0");
+        __WEBPACK_IMPORTED_MODULE_2__Logger_js__["a" /* default */].write("Version: 3.1");
         this.createControlingObjects();
         this.addEventsToPanelButtons();
     }
@@ -306,6 +306,8 @@ class SceneWorker{
             if(t.finishOfGameObject.gameFinish === true){
                 clearInterval(t.repeatInterval);
             }
+
+            t.pointLight.position.set(t.heroController.hero.position.x, 4, t.heroController.hero.position.z);
 
             if(t.finishCube !== null){
                 t.finishCube.rotation.y += 0.04;
@@ -530,6 +532,9 @@ class SceneWorker{
         this.scene.add(light_3);
         this.scene.add(light_4);
         this.scene.add(light_5);
+
+        this.pointLight = __WEBPACK_IMPORTED_MODULE_1__ObjectsCreator__["a" /* default */].createPointLight(50, 50, force);
+        this.scene.add(this.pointLight);
     }
 
     addGroundToScene(){
@@ -553,6 +558,12 @@ class ObjectsCreator{
         const yy = 220;
         spotLight.position.set(xx, yy, zz);
         return spotLight;
+    }
+
+    static createPointLight(xx, zz, force){
+        const pointLight = new THREE.PointLight( "#ffffff", force);
+        pointLight.position.set( xx, 4, zz );
+        return pointLight;
     }
 
     static createFinishPosition(i, j, scene) {

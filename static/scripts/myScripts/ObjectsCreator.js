@@ -8,6 +8,12 @@ export default class ObjectsCreator{
         return spotLight;
     }
 
+    static createPointLight(xx, zz, force){
+        const pointLight = new THREE.PointLight( "#ffffff", force);
+        pointLight.position.set( xx, 4, zz );
+        return pointLight;
+    }
+
     static createFinishPosition(i, j, scene) {
         const ww = 5;
         let cube = ObjectsCreator.createCube(2, 2, 2, "#000000");

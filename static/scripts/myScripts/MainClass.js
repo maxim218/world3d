@@ -7,7 +7,7 @@ import Logger from "./Logger.js";
 class MainClass {
     constructor(){
         Logger.write("RELEASE VERSION");
-        Logger.write("Version: 2.0");
+        Logger.write("Version: 3.1");
         this.createControlingObjects();
         this.addEventsToPanelButtons();
     }
